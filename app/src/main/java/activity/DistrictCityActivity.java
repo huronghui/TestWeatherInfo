@@ -91,7 +91,7 @@ public class DistrictCityActivity extends Activity{
         public void onItemClick(ZrcListView parent, View view, int position, long id) {
 
             Intent intent = new Intent(DistrictCityActivity.this, CityWeatherActivity.class);
-            intent.putExtra("remoteId", mDataManager.getPrivinceCityItemIdList().get(position));
+            intent.putExtra("remoteId", mDataManager.getDistrictCityItemList().get(position));
             startActivity(intent);
         }
     };

@@ -65,11 +65,15 @@ public class CityWeatherActivity extends Activity{
                 }
             };
 
+    public void LoadData(Cityweatherbean bean) {
+
+    }
     public CityWeatherHttpRequest.onCityWeatherHttpRequestListtener mOnCityWeatherHttpRequestListener =
             new CityWeatherHttpRequest.onCityWeatherHttpRequestListtener() {
                 @Override
                 public void onSucceed(Cityweatherbean bean) {
                     Log.e(TAG,bean.toString());
+                    LoadData(bean);
                 }
 
                 @Override

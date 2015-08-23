@@ -11,6 +11,7 @@ public class Cityweatherbean implements Parcelable{
     private String city;
     private String cityid;
     private String temp1;
+    private String temp2;
     private String weather;
 
     public String getCity() {
@@ -40,8 +41,17 @@ public class Cityweatherbean implements Parcelable{
         return true;
     }
 
+    public String getTemp2() {
+        return temp2;
+    }
+
+    public boolean setTemp2(String temp2) {
+        this.temp2 = temp2;
+        return true;
+    }
+
     public String getWeather() {
-        return city;
+        return weather;
     }
 
     public boolean setWeather(String weather) {
@@ -64,7 +74,7 @@ public class Cityweatherbean implements Parcelable{
     @Override
     public String toString() {
         return "Cityweatherbean [ city = " + city + " , cityid = " + cityid +
-                " , temp1 = " + temp1 + " , weather  = " + weather + "]";
+                " , temp1 = " + temp1 + ", temp2 = " + temp2 + " , weather  = " + weather + "]";
     }
 
 }

@@ -97,10 +97,11 @@ public class DistrictCityActivity extends Activity{
     };
     protected void refresh() {
         String id = remoteId+"";
-        Log.e(TAG, "id = " + id);
-        if(id.length() / 2 != 0 ) {
+        Log.e(TAG, "id = " + id + "ddd");
+        if((id.length() % 2) != 0 ) {
             id = "0"+id;
         }
+        Log.e(TAG, "id = " + id);
         mDistrictCityHttpRequest.StringRequest(Define.PRIVINCE_CITY_PATH + id + ".xml");
     }
 

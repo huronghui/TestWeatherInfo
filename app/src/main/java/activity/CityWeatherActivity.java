@@ -3,10 +3,13 @@ package activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.hrh.testweatherinfo.ApplicationData;
 import com.example.hrh.testweatherinfo.Define;
 import com.example.hrh.testweatherinfo.R;
+
+import org.w3c.dom.Text;
 
 import data.WeatherBean.Cityweatherbean;
 import network.CityWeatherHttpRequest;
@@ -26,10 +29,15 @@ public class CityWeatherActivity extends Activity{
     private Long remoteId;
     private String weatherId;
 
+    private TextView cityNameText;
+    private TextView temp1;
+    private TextView temp2;
+    private TextView weatherDespText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_weathercity);
+        initview();
         mAppData = (ApplicationData)getApplication();
         mDataManager = mAppData.getDataManager();
         remoteId  = getIntent().getLongExtra("remoteId", -1);
@@ -42,10 +50,17 @@ public class CityWeatherActivity extends Activity{
         refresh();
     }
 
+    private void initview() {
+        cityNameText = (TextView)findViewById(R.id.city_textview_name);
+        temp1 = (TextView)findViewById(R.id.temp1);
+        temp2 = (TextView)findViewById(R.id.temp2);
+        weatherDespText = (TextView)findViewById(R.id.weather_desp);
+    }
+
     protected void refresh() {
         String id = remoteId+"";
         Log.e(TAG, "id = " + id);
-        if(id.length() / 2 != 0 ) {
+        if((id.length() % 2) != 0 ) {
             id = "0"+id;
         }
         mCityWeatherInfoHttpRequest.StringRequest(Define.PRIVINCE_CITY_PATH + id + ".xml");
@@ -66,7 +81,10 @@ public class CityWeatherActivity extends Activity{
             };
 
     public void LoadData(Cityweatherbean bean) {
-
+        cityNameText.setText(bean.getCity());
+        temp1.setText(bean.getTemp1());
+        temp2.setText(bean.getTemp2());
+        weatherDespText.setText(bean.getWeather());
     }
     public CityWeatherHttpRequest.onCityWeatherHttpRequestListtener mOnCityWeatherHttpRequestListener =
             new CityWeatherHttpRequest.onCityWeatherHttpRequestListtener() {

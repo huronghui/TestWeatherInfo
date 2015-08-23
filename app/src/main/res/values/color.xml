@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="transparent">#00000000</color>
+    <color name="green">#ff58a525</color>
+    <color name="gray">#ffb5b5b5</color>
+    <color name="red">#fff68f50</color>
+    <color name="black">#ff333333</color>
+    <color name="white">#ffffffff</color>
+
+    <color name="background">#ffffffff</color>
+    <color name="notSelected">#ffcdcdcd</color>
+    <color name="selected">#ffc71521</color>
+    <color name="editBackgroung">#ffe5e5e5</color>
+    <color name="lineColor">#ffcccccc</color>
+    <color name="editLine">#ff989898</color>
+    <color name="textColor">#ff6b6b6b</color>
+    <color name="titleColor">#fff4b565</color>
+    <color name="collectionColor">#ffb7b7b7</color>
+    <color name="userLineColor">#ffe2e2e2</color>
+    <color name="itemBackground">#fff0f0f0</color>
+    <color name="nicknameColor">#ff915e8b</color>
+    <color name="comment_dialog">#ff3e3e3e</color>
+    <color name="comment_bg_pressed">#ff2b2b2b</color>
+    <color name="comment_line_color">#ff252525</color>
+    <color name="comment_bg_reply">#fff9f9f9</color>
+    <color name="comment_text_more">#ffa6a6a6</color>
+    <color name="filter_category_text">#ffb4b4b4</color>
+    <color name="filter_category_line">#ffe7e7e7</color>
+    <color name="filter_category_title">#ff6b6b6b</color>
+    <color name="filter_history_text">#ff666666</color>
+</resources>

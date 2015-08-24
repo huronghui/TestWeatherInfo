@@ -33,6 +33,7 @@ public class CityWeatherActivity extends Activity{
     private TextView temp1;
     private TextView temp2;
     private TextView weatherDespText;
+    private TextView timeText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +56,7 @@ public class CityWeatherActivity extends Activity{
         temp1 = (TextView)findViewById(R.id.temp1);
         temp2 = (TextView)findViewById(R.id.temp2);
         weatherDespText = (TextView)findViewById(R.id.weather_desp);
+        timeText = (TextView)findViewById(R.id.current_date);
     }
 
     protected void refresh() {
@@ -85,6 +87,7 @@ public class CityWeatherActivity extends Activity{
         temp1.setText(bean.getTemp1());
         temp2.setText(bean.getTemp2());
         weatherDespText.setText(bean.getWeather());
+        timeText.setText(bean.getPtime());
     }
     public CityWeatherHttpRequest.onCityWeatherHttpRequestListtener mOnCityWeatherHttpRequestListener =
             new CityWeatherHttpRequest.onCityWeatherHttpRequestListtener() {

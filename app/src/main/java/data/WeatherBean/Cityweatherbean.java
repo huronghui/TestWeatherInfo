@@ -13,6 +13,7 @@ public class Cityweatherbean implements Parcelable{
     private String temp1;
     private String temp2;
     private String weather;
+    private String ptime;
 
     public String getCity() {
         return city;
@@ -50,6 +51,14 @@ public class Cityweatherbean implements Parcelable{
         return true;
     }
 
+    public String getPtime() {
+        return ptime;
+    }
+
+    public boolean setPtime(String ptime) {
+        this.ptime = ptime;
+        return true;
+    }
     public String getWeather() {
         return weather;
     }
@@ -69,12 +78,14 @@ public class Cityweatherbean implements Parcelable{
         dest.writeString(cityid);
         dest.writeString(temp1);
         dest.writeString(weather);
+        dest.writeString(temp2);
+        dest.writeString(ptime);
     }
 
     @Override
     public String toString() {
         return "Cityweatherbean [ city = " + city + " , cityid = " + cityid +
-                " , temp1 = " + temp1 + ", temp2 = " + temp2 + " , weather  = " + weather + "]";
+                " , temp1 = " + temp1 + ", temp2 = " + temp2 + ", ptime = " + ptime +  " , weather  = " + weather + "]";
     }
 
 }

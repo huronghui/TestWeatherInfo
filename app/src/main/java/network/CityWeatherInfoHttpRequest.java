@@ -6,12 +6,6 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.example.hrh.testweatherinfo.Define;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import activity.CityWeatherActivity;
-import data.PrivinceCity;
-
 /**
  * Created by hrh on 2015/8/23.
  */
@@ -45,7 +39,7 @@ public class CityWeatherInfoHttpRequest extends HttpRequest{
             @Override
             public void onError(VolleyError error) {
                 Log.e(TAG,error.getMessage());
-                if (null != mHttpResultListener) {
+                if (null != mCityWeatherInfoHttpRequestListener) {
                     mCityWeatherInfoHttpRequestListener.onError(Define.NetErrorReason.NOT_KNOWN.getReason());
                 }
             }

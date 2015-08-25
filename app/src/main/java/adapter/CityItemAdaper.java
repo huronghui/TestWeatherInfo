@@ -10,9 +10,7 @@ import android.widget.TextView;
 
 import com.example.hrh.testweatherinfo.R;
 
-import org.w3c.dom.Text;
-
-import data.City;
+import data.CityData;
 import util.datamanager.DataManager;
 import view.CityItemViewHolder;
 
@@ -35,6 +33,7 @@ public class CityItemAdaper extends BaseAdapter{
     @Override
     public int getCount() {
         int size = mDataManager.getCityItemIdList().size();
+        Log.e(TAG, "size = " + size);
         return size;
     }
 
@@ -65,7 +64,7 @@ public class CityItemAdaper extends BaseAdapter{
         Long itemId = mDataManager.getCityItemIdList().get(position);
         Log.e("Adapter", "pos = " + position + " itemId = " + itemId);
 
-        City item = mDataManager.getCityItems(itemId);
+        CityData item = mDataManager.getCityItems(itemId);
         if(null != item) {
             holder.itemName.setText(item.getCityName());
         }

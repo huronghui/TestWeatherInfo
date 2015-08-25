@@ -9,7 +9,7 @@ import com.example.hrh.testweatherinfo.Define;
 import java.util.ArrayList;
 import java.util.List;
 
-import data.PrivinceCity;
+import data.PrivinceCityData;
 
 /**
  * Created by hrh on 2015/8/22.
@@ -21,7 +21,7 @@ public class PrivinceCityHttpRequest extends HttpRequest {
 
 
     public interface onPrivinceCityHttpRequestListener {
-        void onSucced(PrivinceCity[] response);
+        void onSucced(PrivinceCityData[] response);
 
         void onError(int reason);
     }
@@ -40,18 +40,18 @@ public class PrivinceCityHttpRequest extends HttpRequest {
                 if(null != response) {
                     Log.e(TAG, "response = " + response);
                     String privince[] = response.split(",");
-                    List list=new ArrayList<PrivinceCity>();
+                    List list=new ArrayList<PrivinceCityData>();
                     for(int i = 0; i < privince.length; i++) {
                         String privinceitem[] = privince[i].split("\\|");
-                        PrivinceCity city = new PrivinceCity();
+                        PrivinceCityData city = new PrivinceCityData();
                         Long itemid = (long)Integer.valueOf(privinceitem[0]).intValue();
                         city.setId(itemid);
                         city.setCountyName(privinceitem[1]);
                         list.add(city);
                     }
-                    PrivinceCity[] products = new PrivinceCity[list.size()];
+                    PrivinceCityData[] products = new PrivinceCityData[list.size()];
                     for(int i=0;i<list.size();i++){
-                        products[i]=(PrivinceCity)list.get(i);
+                        products[i]=(PrivinceCityData)list.get(i);
                     }
                     mPrivinceCityHttpRequestListener.onSucced(products);
                 }
@@ -60,7 +60,7 @@ public class PrivinceCityHttpRequest extends HttpRequest {
             @Override
             public void onError(VolleyError error) {
                 Log.e(TAG,error.getMessage());
-                if (null != mHttpResultListener) {
+                if (null != mPrivinceCityHttpRequestListener) {
                     mPrivinceCityHttpRequestListener.onError(Define.NetErrorReason.NOT_KNOWN.getReason());
                 }
             }

@@ -52,7 +52,7 @@ public class CityWeatherHttpRequest extends HttpRequest {
 
             @Override
             public void onError(VolleyError error) {
-                if (null != mHttpResultListener) {
+                if (null != mCityWeatherHttpRequestListener) {
                     mCityWeatherHttpRequestListener.onError(Define.NetErrorReason.NOT_KNOWN.getReason());
                 }
             }

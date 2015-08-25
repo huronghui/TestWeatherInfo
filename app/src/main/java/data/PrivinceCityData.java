@@ -3,16 +3,23 @@ package data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import de.greendao.daoexample.PrivinceCity;
+
 /**
  * Created by hrh on 2015/8/21.
  */
-public class PrivinceCity implements Parcelable{
+public class PrivinceCityData implements Parcelable{
     private Long id;
     private String countyName;
     private String countyCode;
     private int cityId;
 
-    public PrivinceCity() {
+    public PrivinceCityData(Long id, String countyName, String countyCode) {
+        this.id = id;
+        this.countyName = countyName;
+        this.countyCode = countyCode;
+    }
+    public PrivinceCityData () {
         super();
     }
 
@@ -61,11 +68,11 @@ public class PrivinceCity implements Parcelable{
         dest.writeInt(cityId);
     }
 
-    public static final Creator<PrivinceCity> CREATOR = new Creator<PrivinceCity>() {
+    public static final Creator<PrivinceCityData> CREATOR = new Creator<PrivinceCityData>() {
 
         @Override
-        public PrivinceCity createFromParcel(Parcel source) {
-            PrivinceCity item = new PrivinceCity();
+        public PrivinceCityData createFromParcel(Parcel source) {
+            PrivinceCityData item = new PrivinceCityData();
             item.id = source.readLong();
             item.countyName = source.readString();
             item.countyCode = source.readString();
@@ -74,14 +81,14 @@ public class PrivinceCity implements Parcelable{
         }
 
         @Override
-        public PrivinceCity[] newArray(int size) {
-            return new PrivinceCity[size];
+        public PrivinceCityData[] newArray(int size) {
+            return new PrivinceCityData[size];
         }
     };
 
     @Override
     public String toString() {
-        return "PrivinceCity [id = " + id + " , countyName = " + countyName + " , countyCode = " + countyCode
+        return "PrivinceCityData [id = " + id + " , countyName = " + countyName + " , countyCode = " + countyCode
                 + " , cityId = " + cityId + "]";
     }
 }

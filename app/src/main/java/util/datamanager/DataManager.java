@@ -4,9 +4,9 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
-import data.City;
+import data.CityData;
 import data.DistrictCity;
-import data.PrivinceCity;
+import data.PrivinceCityData;
 import util.datamanager.cache.CityItemCache;
 import util.datamanager.cache.DistrictCityCache;
 import util.datamanager.cache.PrivinceCityItemCache;
@@ -28,14 +28,14 @@ public class DataManager {
     }
 
     /*
-    * City Info
+    * CityData Info
      */
 
-    public City getCityItems(Long id) {
+    public CityData getCityItems(Long id) {
         return mCityItemCache.readCache(id);
     }
 
-    public boolean setCityItems(City[]  products) {
+    public boolean setCityItems(CityData[]  products) {
         return mCityItemCache.writeCache(products);
     }
 
@@ -50,11 +50,11 @@ public class DataManager {
     /*
     * Privince city info
      */
-    public PrivinceCity getPrivinceCityItems(Long id) {
+    public PrivinceCityData getPrivinceCityItems(Long id) {
         return mPrivinceCityItemCache.readCache(id);
     }
 
-    public  boolean setPrivinceCityItems(PrivinceCity[] products) {
+    public  boolean setPrivinceCityItems(PrivinceCityData[] products) {
         return mPrivinceCityItemCache.writeCache(products);
     }
 

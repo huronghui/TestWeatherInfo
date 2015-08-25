@@ -6,15 +6,21 @@ import android.os.Parcelable;
 /**
  * Created by hrh on 2015/8/21.
  */
-public class City implements Parcelable {
+public class CityData implements Parcelable {
 
     private Long id;
     private String cityName;
     private String cityCode;
     private int provinceId;
 
-    public City() {
+    public CityData() {
         super();
+    }
+
+    public CityData(Long id, String cityName, String cityCode) {
+        this.id = id;
+        this.cityName = cityName;
+        this.cityCode = cityCode;
     }
 
     public Long getId() {
@@ -62,11 +68,11 @@ public class City implements Parcelable {
         dest.writeInt(provinceId);
     }
 
-    public static final Creator<City> CREATOR = new Creator<City>() {
+    public static final Creator<CityData> CREATOR = new Creator<CityData>() {
 
         @Override
-        public City createFromParcel(Parcel source) {
-            City item = new City();
+        public CityData createFromParcel(Parcel source) {
+            CityData item = new CityData();
             item.id = source.readLong();
             item.cityCode = source.readString();
             item.cityName = source.readString();
@@ -75,14 +81,14 @@ public class City implements Parcelable {
         }
 
         @Override
-        public City[] newArray(int size) {
-            return new City[size];
+        public CityData[] newArray(int size) {
+            return new CityData[size];
         }
     };
 
     @Override
     public String toString() {
-        return "City [id = " + id + " , CityName = " + cityName + " , CityCode = " + cityCode
+        return "CityData [id = " + id + " , CityName = " + cityName + " , CityCode = " + cityCode
                 + " , provinceId = " + provinceId + "]";
     }
 }

@@ -8,14 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.hrh.testweatherinfo.ApplicationData;
 import com.example.hrh.testweatherinfo.R;
 
-import java.security.Principal;
-
-import data.PrivinceCity;
+import data.PrivinceCityData;
 import util.datamanager.DataManager;
-import view.CityItemViewHolder;
 import view.PrivinceCityItemViewHolder;
 
 /**
@@ -37,6 +33,7 @@ public class PrivinceCityItemAdaper extends BaseAdapter{
     @Override
     public int getCount() {
         int size = mDatamansger.getPrivinceCityItemIdList().size();
+        Log.e(TAG, "size = " + size);
         return size;
     }
 
@@ -64,7 +61,9 @@ public class PrivinceCityItemAdaper extends BaseAdapter{
         }
 
         Long itemid = mDatamansger.getPrivinceCityItemIdList().get(position);
-        PrivinceCity itembean = mDatamansger.getPrivinceCityItems(itemid);
+
+        Log.e(TAG, "pos = " + position + " itemId = " + itemid);
+        PrivinceCityData itembean = mDatamansger.getPrivinceCityItems(itemid);
         if(null != itembean) {
             holder.itemName.setText(itembean.getCountyName());
         }

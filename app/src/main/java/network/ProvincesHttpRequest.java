@@ -6,12 +6,10 @@ import android.util.Log;
 import com.android.volley.VolleyError;
 import com.example.hrh.testweatherinfo.Define;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import data.City;
+import data.CityData;
 
 /**
  * Created by hrh on 2015/8/21.
@@ -21,21 +19,13 @@ public class ProvincesHttpRequest extends HttpRequest{
 
 //    private OnProvincesHttpRequestListener mProvincesHttpRequestListener;
     private OnProvincesHttpStringRequestListener mProvincesHttpStringRequestListener;
-//    public interface OnProvincesHttpRequestListener {
-//        void onSucceed(String url, JSONObject products);
-//
-//        void onError(int reason);
-//    }
 
     public  interface OnProvincesHttpStringRequestListener {
-        void onSucced(City[] response);
+        public void onSucced(CityData[] response);
 
-        void onError(int reason);
+        public void onError(int reason);
     }
 
-//    public void setProvincesHttpRequestListener(OnProvincesHttpRequestListener listener) {
-//        mProvincesHttpRequestListener = listener;
-//    }
 
     public void setmProvincesStringHttpRequestListener(OnProvincesHttpStringRequestListener listener) {
         mProvincesHttpStringRequestListener = listener;
@@ -51,27 +41,29 @@ public class ProvincesHttpRequest extends HttpRequest{
                 if(null != response) {
                     Log.e(TAG,"response = "+response);
                     String privince[] = response.split(",");
-                    List list=new ArrayList<City>();
+                    List list=new ArrayList<CityData>();
                     for(int i = 0; i < privince.length; i++) {
                         String privinceitem[] = privince[i].split("\\|");
-                        City city = new City();
+                        CityData cityData = new CityData();
                         Long itemid = (long)Integer.valueOf(privinceitem[0]).intValue();
-                        city.setId(itemid);
-                        city.setCityName(privinceitem[1]);
-                        list.add(city);
+                        cityData.setId(itemid);
+                        cityData.setCityName(privinceitem[1]);
+                        list.add(cityData);
                     }
-                    City[] products = new City[list.size()];
+                    CityData[] products = new CityData[list.size()];
                     for(int i=0;i<list.size();i++){
-                        products[i]=(City)list.get(i);
+                        products[i]=(CityData)list.get(i);
                     }
                     mProvincesHttpStringRequestListener.onSucced(products);
+                } else {
+                    mProvincesHttpStringRequestListener.onError(Define.NetErrorReason.NOT_KNOWN.getReason());
                 }
             }
 
             @Override
             public void onError(VolleyError error) {
-                Log.e(TAG,error.getMessage());
-                if (null != mHttpResultListener) {
+                Log.e(TAG,"error = " + error.getMessage());
+                if (null != mProvincesHttpStringRequestListener) {
                     mProvincesHttpStringRequestListener.onError(Define.NetErrorReason.NOT_KNOWN.getReason());
                 }
             }

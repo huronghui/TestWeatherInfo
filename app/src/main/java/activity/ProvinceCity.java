@@ -11,7 +11,7 @@ import com.example.hrh.testweatherinfo.Define;
 import com.example.hrh.testweatherinfo.R;
 
 import adapter.PrivinceCityItemAdaper;
-import data.PrivinceCity;
+import data.PrivinceCityData;
 import network.PrivinceCityHttpRequest;
 import util.datamanager.DataManager;
 import zrc.widget.SimpleFooter;
@@ -24,7 +24,7 @@ import zrc.widget.ZrcListView;
  */
 public class ProvinceCity extends Activity {
 
-    public static final String TAG = PrivinceCity.class.getSimpleName();
+    public static final String TAG = PrivinceCityData.class.getSimpleName();
     private ZrcListView mListView;
     private ApplicationData mAppData;
     private DataManager mDataManager;
@@ -39,9 +39,10 @@ public class ProvinceCity extends Activity {
         setContentView(R.layout.activity_main);
         mAppData = (ApplicationData)getApplication();
         remoteId  = getIntent().getLongExtra("remoteId",-1);
-        mDataManager = ((ApplicationData) this.getApplication()).getDataManager();
+        mDataManager = mAppData.getDataManager();
 
         initZrcvlistview();
+
         mPrivinceCityHttpRequest = new PrivinceCityHttpRequest(this);
         mPrivinceCityHttpRequest.setmProvincesStringHttpRequestListener(mPrivinceCityHttpRequestListener);
         mListView.refresh();
@@ -78,8 +79,9 @@ public class ProvinceCity extends Activity {
             }
         });
 
-        mDataManager.clearPrivinceItem();
+//        mDataManager.clearPrivinceItem();
         mListView.refresh();
+
         mAdapter = new PrivinceCityItemAdaper(this, mDataManager);
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(mOnItemClickListener);
@@ -123,7 +125,7 @@ public class ProvinceCity extends Activity {
 
     public PrivinceCityHttpRequest.onPrivinceCityHttpRequestListener mPrivinceCityHttpRequestListener = new PrivinceCityHttpRequest.onPrivinceCityHttpRequestListener() {
         @Override
-        public void onSucced(PrivinceCity[] response) {
+        public void onSucced(PrivinceCityData[] response) {
             Log.e(TAG,"response = " + response);
             mDataManager.setPrivinceCityItems(response);
             mAdapter.notifyDataSetChanged();
@@ -132,7 +134,9 @@ public class ProvinceCity extends Activity {
 
         @Override
         public void onError(int reason) {
-
+            mAdapter.notifyDataSetChanged();
+            mListView.setRefreshSuccess("");
+//            mListView.stopLoadMore();
         }
     };
 }

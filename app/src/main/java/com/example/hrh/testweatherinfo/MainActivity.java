@@ -2,24 +2,14 @@ package com.example.hrh.testweatherinfo;
 
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 
-import com.android.volley.VolleyError;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import activity.ProvinceCity;
 import adapter.CityItemAdaper;
-import data.City;
+import data.CityData;
 import network.ProvincesHttpRequest;
 import util.datamanager.DataManager;
 import zrc.widget.SimpleFooter;
@@ -81,7 +71,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        mDataManager.clearCityItem();
+//        mDataManager.clearCityItem();
         mListView.refresh();
         mAdapter = new CityItemAdaper(this, mDataManager);
         mListView.setAdapter(mAdapter);
@@ -124,7 +114,7 @@ public class MainActivity extends Activity {
             .OnProvincesHttpStringRequestListener() {
 
         @Override
-        public void onSucced(City[] response) {
+        public void onSucced(CityData[] response) {
             Log.e(TAG,"response = " + response);
             mDataManager.setCityItems(response);
             mAdapter.notifyDataSetChanged();
@@ -133,7 +123,9 @@ public class MainActivity extends Activity {
 
         @Override
         public void onError(int reason) {
-
+            Log.e(TAG, "error = " + reason);
+            mListView.setRefreshSuccess("");
+            mListView.stopLoadMore();
         }
     };
 }

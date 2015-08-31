@@ -1,8 +1,11 @@
 package activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.example.hrh.testweatherinfo.ApplicationData;
@@ -19,7 +22,7 @@ import util.datamanager.DataManager;
 /**
  * Created by hrh on 2015/8/23.
  */
-public class CityWeatherActivity extends Activity{
+public class CityWeatherActivity extends Activity {
 
     private static final String TAG = CityWeatherActivity.class.getSimpleName();
     private ApplicationData mAppData;
@@ -54,6 +57,7 @@ public class CityWeatherActivity extends Activity{
     private void initview() {
         cityNameText = (TextView)findViewById(R.id.city_textview_name);
         temp1 = (TextView)findViewById(R.id.temp1);
+        temp1.setOnClickListener(listener);
         temp2 = (TextView)findViewById(R.id.temp2);
         weatherDespText = (TextView)findViewById(R.id.weather_desp);
         timeText = (TextView)findViewById(R.id.current_date);
@@ -104,4 +108,18 @@ public class CityWeatherActivity extends Activity{
             };
 
 
+   private OnClickListener listener = new OnClickListener() {
+       @Override
+       public void onClick(View v) {
+           switch (v.getId()) {
+               case R.id.temp1:
+                   Intent intent = new Intent("com.example.testweatherinfo.FORCE_TITLE");
+                   sendBroadcast(intent);
+                    break;
+
+               default:
+                   break;
+           }
+       }
+   };
 }

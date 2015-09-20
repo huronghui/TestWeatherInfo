@@ -3,12 +3,18 @@ package activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.hrh.testweatherinfo.ApplicationData;
 import com.example.hrh.testweatherinfo.Define;
 import com.example.hrh.testweatherinfo.R;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import adapter.PrivinceCityItemAdaper;
 import data.PrivinceCityData;
@@ -32,6 +38,7 @@ public class ProvinceCity extends Activity {
     private PrivinceCityHttpRequest mPrivinceCityHttpRequest;
     private int mListViewItemPosition = 0;
     private Long remoteId;
+    private int TIME = 10000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +54,28 @@ public class ProvinceCity extends Activity {
         mPrivinceCityHttpRequest.setmProvincesStringHttpRequestListener(mPrivinceCityHttpRequestListener);
         mListView.refresh();
         mListView.setOnScrollListener(mOnScrollListener);
+        timer.schedule(task, TIME, TIME);
     }
+
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            if(msg.what == 1) {
+                Toast.makeText(ProvinceCity.this, "Hello World again", Toast.LENGTH_LONG).show();
+            }
+            super.handleMessage(msg);
+        };
+    };
+
+    Timer timer = new Timer();
+
+    TimerTask task = new TimerTask() {
+        @Override
+        public void run() {
+            Message message = new Message();
+            message.what = 1;
+            handler.sendMessage(message);
+        }
+    };
 
     private void initZrcvlistview() {
         mListView = (ZrcListView)findViewById(R.id.zListView);

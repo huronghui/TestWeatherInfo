@@ -4,9 +4,13 @@ package com.example.hrh.testweatherinfo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import HandlerUtil.MyHandler;
+import HandlerUtil.MyTimeTask;
 import activity.ProvinceCity;
 import adapter.CityItemAdaper;
 import data.CityData;
@@ -26,6 +30,8 @@ public class MainActivity extends Activity {
     private ApplicationData mAppData;
     private ProvincesHttpRequest provincesHttpRequest;
     private int mListViewItemPosition = 0;
+    private int TIME = 1000;
+    private MyHandler myHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,8 @@ public class MainActivity extends Activity {
         provincesHttpRequest.setmProvincesStringHttpRequestListener(mHttpResultListener);
         mListView.refresh();
         mListView.setOnScrollListener(mOnScrollListener);
+        myHandler = new MyHandler(MainActivity.this, TIME * 10,  myTimeTask);
+        myHandler.startTimeTask();
     }
 
     private void initZrclistview() {
@@ -126,6 +134,19 @@ public class MainActivity extends Activity {
             Log.e(TAG, "error = " + reason);
             mListView.setRefreshSuccess("");
             mListView.stopLoadMore();
+        }
+    };
+
+    @Override
+   protected void onPause() {
+        super.onPause();
+        myHandler.stopTimeTask();
+    }
+
+    public MyTimeTask myTimeTask = new MyTimeTask() {
+        @Override
+        public void TimeTask() {
+            Toast.makeText(MainActivity.this,"hello world",Toast.LENGTH_LONG).show();
         }
     };
 }

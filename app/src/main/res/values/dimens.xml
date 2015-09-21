@@ -6,4 +6,5 @@
     <!-- zrclistview -->
     <dimen name="top_offset">50dp</dimen>
     <dimen name="main_top_offset">100dp</dimen>
+    <dimen name="space_8">8.0dip</dimen>
 </resources>

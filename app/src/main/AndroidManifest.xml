@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".AppStart"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,27 +20,36 @@
         </activity>
 
         <activity
-            android:name="activity.ProvinceCity"
+            android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:launchMode="singleTask">
         </activity>
 
         <activity
-            android:name="activity.DistrictCityActivity"
+            android:name=".activity.ProvinceCity"
             android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:launchMode="singleTask">
         </activity>
 
         <activity
-            android:name="activity.CityWeatherActivity"
+            android:name=".activity.DistrictCityActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:launchMode="singleTask">
         </activity>
 
-        <receiver android:name="broadcast.TestBroadcastUsed">
+        <activity
+            android:name=".activity.CityWeatherActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
+        </activity>
+
+        <service android:name=".LogUploadService" />
+
+        <receiver android:name=".broadcast.TestBroadcastUsed">
             <intent-filter>
                 <action android:name="com.example.testweatherinfo.FORCE_TITLE" />
             </intent-filter>

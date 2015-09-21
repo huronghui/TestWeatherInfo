@@ -5,7 +5,7 @@ package com.example.hrh.testweatherinfo;
  */
 public class Define {
 
-    public static final String HUI_LIST_PATH = "http://www.weather.com.cn/data/list3/city.xml";
+    public static final String WEATHER_LIST_PATH = "http://www.weather.com.cn/data/list3/city.xml";
     public static final String PRIVINCE_CITY_PATH = "http://www.weather.com.cn/data/list3/city";
     public static final String PRIVINCE_CITY_WEATHER_PATH = "http://www.weather.com.cn/data/list3/city";
     public static final String CITY_WEATHER_PATH = "http://www.weather.com.cn/data/cityinfo/";

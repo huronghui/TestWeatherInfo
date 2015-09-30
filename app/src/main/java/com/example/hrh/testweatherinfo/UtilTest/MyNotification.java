@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.hrh.testweatherinfo.activity.AsyncTaskImageLoaderActivity;
 import com.example.hrh.testweatherinfo.activity.MainActivity;
 import com.example.hrh.testweatherinfo.R;
 
@@ -27,7 +28,7 @@ public class MyNotification {
         notification.icon = R.drawable.notification_template_icon_bg;
         notification.tickerText = "Notification Test";
         notification.when = System.currentTimeMillis();
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, AsyncTaskImageLoaderActivity.class);
         PendingIntent pi = PendingIntent.getActivity(context, 0, intent, 0);
         notification.setLatestEventInfo(context, "my title", "my content", pi);
         notificationManager.notify(1, notification);

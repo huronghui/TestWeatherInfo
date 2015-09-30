@@ -47,6 +47,13 @@
             android:launchMode="singleTask">
         </activity>
 
+        <activity
+            android:name=".activity.AsyncTaskImageLoaderActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
+        </activity>
+
         <service android:name=".LogUploadService" />
 
         <receiver android:name=".broadcast.TestBroadcastUsed">

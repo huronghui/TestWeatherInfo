@@ -1,10 +1,14 @@
 package com.example.hrh.testweatherinfo.activity;
 
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,9 +17,9 @@ import com.example.hrh.testweatherinfo.Define;
 import com.example.hrh.testweatherinfo.HandlerUtil.MyHandler;
 import com.example.hrh.testweatherinfo.HandlerUtil.MyTimeTask;
 import com.example.hrh.testweatherinfo.R;
-import com.example.hrh.testweatherinfo.activity.ProvinceCity;
 import com.example.hrh.testweatherinfo.adapter.CityItemAdaper;
 import com.example.hrh.testweatherinfo.data.CityData;
+import com.example.hrh.testweatherinfo.fragment.NavigationDrawerFragment;
 import com.example.hrh.testweatherinfo.network.ProvincesHttpRequest;
 import com.example.hrh.testweatherinfo.datamanager.DataManager;
 import zrc.widget.SimpleFooter;
@@ -23,7 +27,8 @@ import zrc.widget.SimpleHeader;
 import zrc.widget.ZrcAbsListView;
 import zrc.widget.ZrcListView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity  implements
+        NavigationDrawerFragment.NavigationDrawerCallbacks{
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private ZrcListView mListView;
@@ -34,11 +39,22 @@ public class MainActivity extends Activity {
     private int mListViewItemPosition = 0;
     private int TIME = 1000;
     private MyHandler myHandler;
+    private CharSequence mTitle;
+    /**
+     * 左侧划出抽屉内部fragment
+     */
+    private NavigationDrawerFragment mNavigationDrawerFragment;
+
+
+    private Fragment currentFragment;
+    private Fragment lastFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initView();
         mAppData = (ApplicationData)getApplication();
         mAppData.initial(this);
         mDataManager = ((ApplicationData) this.getApplication()).getDataManager();
@@ -49,6 +65,22 @@ public class MainActivity extends Activity {
         mListView.setOnScrollListener(mOnScrollListener);
         myHandler = new MyHandler(MainActivity.this, TIME * 10,  myTimeTask);
         myHandler.startTimeTask();
+    }
+
+    private void initView() {
+        mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mTitle = getTitle();
+        // 设置抽屉
+        mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+    }
+
+    @Override
+    public void onNavigationDrawerItemSelected(String title) {
+        onSectionAttached(title);
+    }
+
+    public void onSectionAttached(String title) {
+        mTitle = title;
     }
 
     private void initZrclistview() {
@@ -143,6 +175,34 @@ public class MainActivity extends Activity {
    protected void onPause() {
         super.onPause();
         myHandler.stopTimeTask();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
+
+     if (!mNavigationDrawerFragment.isDrawerOpen()) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        restoreActionBar();
+        return true;
+    }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void restoreActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(mTitle);
     }
 
     public MyTimeTask myTimeTask = new MyTimeTask() {

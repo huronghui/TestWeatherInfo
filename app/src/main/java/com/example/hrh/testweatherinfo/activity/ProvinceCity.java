@@ -43,7 +43,7 @@ public class ProvinceCity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_province);
         mAppData = (ApplicationData)getApplication();
         remoteId  = getIntent().getLongExtra("remoteId",-1);
         mDataManager = mAppData.getDataManager();

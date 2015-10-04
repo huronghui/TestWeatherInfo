@@ -3,6 +3,7 @@ package com.example.hrh.testweatherinfo.network;
 import android.app.Activity;
 import android.util.Log;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -12,6 +13,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hrh.testweatherinfo.ApplicationData;
 
+import org.apache.http.protocol.HTTP;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -90,7 +92,25 @@ public class HttpRequest {
                           mStringHttpResultListener.onError(arg0);
 
             }
-        });
+        }) {
+            protected final String TYPE_UTF8_CHARSET = "charset=UTF-8";
+            @Override
+            protected Response<String> parseNetworkResponse(
+                    NetworkResponse response) {
+                try {
+                    String type = response.headers.get(HTTP.CONTENT_TYPE);
+                    if (type == null) {
+                        type = TYPE_UTF8_CHARSET;
+                        response.headers.put(HTTP.CONTENT_TYPE, type);
+                    } else if (!type.contains("UTF-8")) {
+                        type += ";" + TYPE_UTF8_CHARSET;
+                        response.headers.put(HTTP.CONTENT_TYPE, type);
+                    }
+                } catch (Exception e) {
+                }
+                return super.parseNetworkResponse(response);
+            }
+        };
 
         request.setTag(mActivity);
         mHttpRequestQueue.add(request);

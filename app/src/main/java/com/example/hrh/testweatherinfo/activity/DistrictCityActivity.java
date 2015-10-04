@@ -35,7 +35,7 @@ public class DistrictCityActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_districtcity);
         mAppData = (ApplicationData)getApplication();
         remoteId  = getIntent().getLongExtra("remoteId",-1);
         mDataManager = ((ApplicationData) this.getApplication()).getDataManager();

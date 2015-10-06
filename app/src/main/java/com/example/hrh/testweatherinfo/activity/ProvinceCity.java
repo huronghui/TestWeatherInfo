@@ -17,6 +17,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.example.hrh.testweatherinfo.adapter.PrivinceCityItemAdaper;
+import com.example.hrh.testweatherinfo.base.BaseActivity;
 import com.example.hrh.testweatherinfo.data.PrivinceCityData;
 import com.example.hrh.testweatherinfo.network.PrivinceCityHttpRequest;
 import com.example.hrh.testweatherinfo.datamanager.DataManager;
@@ -28,7 +29,7 @@ import zrc.widget.ZrcListView;
 /**
  * Created by hrh on 2015/8/22.
  */
-public class ProvinceCity extends Activity {
+public class ProvinceCity extends BaseActivity {
 
     public static final String TAG = PrivinceCityData.class.getSimpleName();
     private ZrcListView mListView;
@@ -40,22 +41,6 @@ public class ProvinceCity extends Activity {
     private Long remoteId;
     private int TIME = 10000;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_province);
-        mAppData = (ApplicationData)getApplication();
-        remoteId  = getIntent().getLongExtra("remoteId",-1);
-        mDataManager = mAppData.getDataManager();
-
-        initZrcvlistview();
-
-        mPrivinceCityHttpRequest = new PrivinceCityHttpRequest(this);
-        mPrivinceCityHttpRequest.setmProvincesStringHttpRequestListener(mPrivinceCityHttpRequestListener);
-        mListView.refresh();
-        mListView.setOnScrollListener(mOnScrollListener);
-        timer.schedule(task, TIME, TIME);
-    }
 
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -173,5 +158,35 @@ public class ProvinceCity extends Activity {
 //            mListView.stopLoadMore();
         }
     };
+
+    @Override
+    public void initView() {
+        mAppData = (ApplicationData)getApplication();
+        remoteId  = getIntent().getLongExtra("remoteId",-1);
+        mDataManager = mAppData.getDataManager();
+
+        initZrcvlistview();
+
+
+    }
+
+    @Override
+    protected boolean haseBackButton() {
+        return true;
+    }
+
+    @Override
+    public void initData() {
+        mPrivinceCityHttpRequest = new PrivinceCityHttpRequest(this);
+        mPrivinceCityHttpRequest.setmProvincesStringHttpRequestListener(mPrivinceCityHttpRequestListener);
+        mListView.refresh();
+        mListView.setOnScrollListener(mOnScrollListener);
+        timer.schedule(task, TIME, TIME);
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_province;
+    }
 }
 

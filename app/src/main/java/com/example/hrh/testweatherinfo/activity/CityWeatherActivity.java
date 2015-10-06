@@ -12,6 +12,7 @@ import com.example.hrh.testweatherinfo.ApplicationData;
 import com.example.hrh.testweatherinfo.Define;
 import com.example.hrh.testweatherinfo.R;
 
+import com.example.hrh.testweatherinfo.base.BaseActivity;
 import com.example.hrh.testweatherinfo.data.WeatherBean.Cityweatherbean;
 import com.example.hrh.testweatherinfo.network.CityWeatherHttpRequest;
 import com.example.hrh.testweatherinfo.network.CityWeatherInfoHttpRequest;
@@ -20,7 +21,7 @@ import com.example.hrh.testweatherinfo.datamanager.DataManager;
 /**
  * Created by hrh on 2015/8/23.
  */
-public class CityWeatherActivity extends Activity {
+public class CityWeatherActivity extends BaseActivity {
 
     private static final String TAG = CityWeatherActivity.class.getSimpleName();
     private ApplicationData mAppData;
@@ -35,22 +36,6 @@ public class CityWeatherActivity extends Activity {
     private TextView temp2;
     private TextView weatherDespText;
     private TextView timeText;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weathercity);
-        initview();
-        mAppData = (ApplicationData)getApplication();
-        mDataManager = mAppData.getDataManager();
-        remoteId  = getIntent().getLongExtra("remoteId", -1);
-
-        mCityWeatherHttpRequest = new CityWeatherHttpRequest(this);
-        mCityWeatherHttpRequest.setmCityWeatherHttpRequestListener(mOnCityWeatherHttpRequestListener);
-
-        mCityWeatherInfoHttpRequest = new CityWeatherInfoHttpRequest(this);
-        mCityWeatherInfoHttpRequest.setCityWeatherInfoHttpRequestListener(mCityWeatherInfoHttpRequestListener);
-        refresh();
-    }
 
     private void initview() {
         cityNameText = (TextView)findViewById(R.id.city_textview_name);
@@ -75,7 +60,7 @@ public class CityWeatherActivity extends Activity {
 
                 @Override
                 public void onSucceed(String reponse) {
-                    mCityWeatherHttpRequest.add(Define.CITY_WEATHER_PATH + reponse + ".html" ,null);
+                    mCityWeatherHttpRequest.add(Define.CITY_WEATHER_PATH + reponse + ".html", null);
                 }
 
                 @Override
@@ -120,4 +105,33 @@ public class CityWeatherActivity extends Activity {
            }
        }
    };
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_weathercity;
+    }
+
+    @Override
+    protected boolean haseBackButton() {
+        return true;
+    }
+
+    @Override
+    public void initView() {
+        initview();
+    }
+
+    @Override
+    public void initData() {
+        mAppData = (ApplicationData)getApplication();
+        mDataManager = mAppData.getDataManager();
+        remoteId  = getIntent().getLongExtra("remoteId", -1);
+
+        mCityWeatherHttpRequest = new CityWeatherHttpRequest(this);
+        mCityWeatherHttpRequest.setmCityWeatherHttpRequestListener(mOnCityWeatherHttpRequestListener);
+
+        mCityWeatherInfoHttpRequest = new CityWeatherInfoHttpRequest(this);
+        mCityWeatherInfoHttpRequest.setCityWeatherInfoHttpRequestListener(mCityWeatherInfoHttpRequestListener);
+        refresh();
+    }
 }

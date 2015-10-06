@@ -4,6 +4,8 @@ package com.example.hrh.testweatherinfo.HandlerUtil;
 import android.app.Activity;
 import android.os.Handler;
 
+import com.example.hrh.testweatherinfo.interf.MyTimeTask;
+
 /**
  * Created by hrh on 2015/9/20.
  */

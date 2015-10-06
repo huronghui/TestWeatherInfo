@@ -10,14 +10,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.hrh.testweatherinfo.ApplicationData;
 import com.example.hrh.testweatherinfo.Define;
 import com.example.hrh.testweatherinfo.HandlerUtil.MyHandler;
-import com.example.hrh.testweatherinfo.HandlerUtil.MyTimeTask;
+import com.example.hrh.testweatherinfo.interf.MyTimeTask;
 import com.example.hrh.testweatherinfo.R;
 import com.example.hrh.testweatherinfo.adapter.CityItemAdaper;
+import com.example.hrh.testweatherinfo.base.BaseApplication;
 import com.example.hrh.testweatherinfo.data.CityData;
 import com.example.hrh.testweatherinfo.fragment.NavigationDrawerFragment;
 import com.example.hrh.testweatherinfo.network.ProvincesHttpRequest;
@@ -40,6 +40,7 @@ public class MainActivity extends ActionBarActivity  implements
     private int TIME = 1000;
     private MyHandler myHandler;
     private CharSequence mTitle;
+    private BaseApplication baseApplication;
     /**
      * 左侧划出抽屉内部fragment
      */
@@ -208,7 +209,8 @@ public class MainActivity extends ActionBarActivity  implements
     public MyTimeTask myTimeTask = new MyTimeTask() {
         @Override
         public void TimeTask() {
-            Toast.makeText(MainActivity.this,"hello world",Toast.LENGTH_LONG).show();
+          //  Toast.makeText(MainActivity.this,"hello world",Toast.LENGTH_LONG).show();
+            baseApplication.showToast("hello world!");
         }
     };
 }

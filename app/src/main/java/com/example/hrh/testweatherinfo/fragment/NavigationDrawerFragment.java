@@ -1,6 +1,7 @@
 package com.example.hrh.testweatherinfo.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -24,6 +25,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import com.example.hrh.testweatherinfo.R;
+import com.example.hrh.testweatherinfo.UtilTest.UIHelper;
+import com.example.hrh.testweatherinfo.activity.AsyncTaskImageLoaderActivity;
+import com.example.hrh.testweatherinfo.base.BaseApplication;
+import com.example.hrh.testweatherinfo.data.SimpleBackPage;
 
 /**
  * Created by hrh on 2015/10/4.
@@ -90,12 +95,16 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         View headerView = inflater.inflate(R.layout.list_header, null);
         mDrawerListView.addHeaderView(headerView);
+
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                BaseApplication.showToast(position + "");
                 selectItem(position);
+                UIHelper.showSimpleBack(getActivity(), SimpleBackPage.ASYNCTASKIMAGELOADER);
             }
         });
+
         String[] itemTitle = getResources().getStringArray(R.array.item_title);
         int[] itemIconRes = {
                 R.drawable.ic_drawer_home,

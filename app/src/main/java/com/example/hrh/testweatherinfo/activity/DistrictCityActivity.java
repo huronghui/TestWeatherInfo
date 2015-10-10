@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.BaseAdapter;
 
 import com.example.hrh.testweatherinfo.ApplicationData;
 import com.example.hrh.testweatherinfo.Define;
@@ -12,6 +13,8 @@ import com.example.hrh.testweatherinfo.R;
 
 import com.example.hrh.testweatherinfo.adapter.DistrictCityAdapter;
 
+import com.example.hrh.testweatherinfo.base.BaseActivity;
+import com.example.hrh.testweatherinfo.base.BaseListViewActivity;
 import com.example.hrh.testweatherinfo.data.DistrictCity;
 import com.example.hrh.testweatherinfo.network.DistrictCityHttpRequest;
 import com.example.hrh.testweatherinfo.datamanager.DataManager;
@@ -22,79 +25,18 @@ import zrc.widget.ZrcListView;
 /**
  * Created by hrh on 2015/8/22.
  */
-public class DistrictCityActivity extends Activity{
+public class DistrictCityActivity extends BaseListViewActivity{
 
     protected static final String TAG = DistrictCityActivity.class.getSimpleName();
-    protected ApplicationData mAppData;
-    protected DataManager mDataManager;
-    private Long remoteId;
-    private ZrcListView mListView;
-    private DistrictCityAdapter mAdapter;
     private DistrictCityHttpRequest mDistrictCityHttpRequest;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_districtcity);
-        mAppData = (ApplicationData)getApplication();
-        remoteId  = getIntent().getLongExtra("remoteId",-1);
-        mDataManager = ((ApplicationData) this.getApplication()).getDataManager();
-        initZrclistview();
-
-        mDistrictCityHttpRequest = new DistrictCityHttpRequest(this);
-        mDistrictCityHttpRequest.setDistrictCityStringHttpRequestListener(mDistrictCityStringHttpRequest);
-        mListView.refresh();
-
+    protected void ItemClick(int position) {
+        Intent intent = new Intent(DistrictCityActivity.this, CityWeatherActivity.class);
+        intent.putExtra("remoteId", mDataManager.getDistrictCityItemList().get(position));
+        startActivity(intent);
     }
 
-    private void initZrclistview() {
-        mListView = (ZrcListView)findViewById(R.id.zListView);
-        mListView.setFirstTopOffset((int) this.getResources().getDimension(R.dimen.top_offset));
-
-        SimpleHeader header = new SimpleHeader(this);
-        header.setTextColor(0xff0066aa);
-        header.setCircleColor(0xff33bbee);
-        mListView.setHeadable(header);
-
-        SimpleFooter footer = new SimpleFooter(this);
-        footer.setCircleColor(0xff33bbee);
-        mListView.setFootable(footer);
-
-        mListView.setItemAnimForTopIn(R.anim.topitem_in);
-        mListView.setItemAnimForBottomIn(R.anim.bottomitem_in);
-
-        mListView.setOnRefreshStartListener(new ZrcListView.OnStartListener() {
-            @Override
-            public void onStart() {
-                refresh();
-            }
-        });
-
-        mListView.setOnLoadMoreStartListener(new ZrcListView.OnStartListener() {
-            @Override
-            public void onStart() {
-                loadMore();
-            }
-        });
-
-        mDataManager.clearDistrictCity();
-        mListView.refresh();
-        mAdapter = new DistrictCityAdapter(this, mDataManager);
-        mListView.setAdapter(mAdapter);
-        mListView.setOnItemClickListener(mOnItemClickListener);
-    }
-
-
-    private ZrcListView.OnItemClickListener mOnItemClickListener = new ZrcListView.OnItemClickListener() {
-
-        @Override
-        public void onItemClick(ZrcListView parent, View view, int position, long id) {
-
-            Intent intent = new Intent(DistrictCityActivity.this, CityWeatherActivity.class);
-            intent.putExtra("remoteId", mDataManager.getDistrictCityItemList().get(position));
-            startActivity(intent);
-        }
-    };
     protected void refresh() {
         String id = remoteId+"";
         Log.e(TAG, "id = " + id + "ddd");
@@ -123,4 +65,15 @@ public class DistrictCityActivity extends Activity{
 
         }
     };
+
+    @Override
+    protected void InitHttpRequest() {
+        mDistrictCityHttpRequest = new DistrictCityHttpRequest(this);
+        mDistrictCityHttpRequest.setDistrictCityStringHttpRequestListener(mDistrictCityStringHttpRequest);
+    }
+
+    @Override
+    protected BaseAdapter getListAdapter() {
+        return new DistrictCityAdapter(this, mDataManager);
+    }
 }

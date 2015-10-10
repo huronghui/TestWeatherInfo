@@ -46,10 +46,6 @@ public class MainActivity extends ActionBarActivity  implements
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
-
-    private Fragment currentFragment;
-    private Fragment lastFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

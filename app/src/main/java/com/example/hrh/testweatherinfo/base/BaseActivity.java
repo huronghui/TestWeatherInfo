@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.hrh.testweatherinfo.AppManager;
 import com.example.hrh.testweatherinfo.R;
 
 import org.kymjs.kjframe.utils.StringUtils;
@@ -27,7 +28,7 @@ public abstract class BaseActivity extends ActionBarActivity implements BaseView
         if (getLayoutId() != 0) {
             setContentView(getLayoutId());
         }
-
+        AppManager.getAppManager().addActivity(this);
         mActionBar = getSupportActionBar();
         if(hasActionBar()) {
             initActionBar(mActionBar);
@@ -40,9 +41,7 @@ public abstract class BaseActivity extends ActionBarActivity implements BaseView
 
     protected void init(Bundle savedInstanceState) {}
 
-    protected int getLayoutId() {
-        return 0;
-    }
+    abstract protected int getLayoutId();
 
     protected boolean hasActionBar() {
         return true;

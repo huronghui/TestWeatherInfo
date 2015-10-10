@@ -15,4 +15,5 @@
     <string name="action_example">Example action</string>
     <string name="logout">logout</string>
     <string name="about">About</string>
+    <string name="asynctaskimageloader">AsyncTaskImage</string>
 </resources>

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.Toast;
 
 import com.example.hrh.testweatherinfo.ApplicationData;
@@ -18,6 +19,7 @@ import java.util.TimerTask;
 
 import com.example.hrh.testweatherinfo.adapter.PrivinceCityItemAdaper;
 import com.example.hrh.testweatherinfo.base.BaseActivity;
+import com.example.hrh.testweatherinfo.base.BaseListViewActivity;
 import com.example.hrh.testweatherinfo.data.PrivinceCityData;
 import com.example.hrh.testweatherinfo.network.PrivinceCityHttpRequest;
 import com.example.hrh.testweatherinfo.datamanager.DataManager;
@@ -29,18 +31,11 @@ import zrc.widget.ZrcListView;
 /**
  * Created by hrh on 2015/8/22.
  */
-public class ProvinceCity extends BaseActivity {
+public class ProvinceCity extends BaseListViewActivity {
 
     public static final String TAG = PrivinceCityData.class.getSimpleName();
-    private ZrcListView mListView;
-    private ApplicationData mAppData;
-    private DataManager mDataManager;
-    private PrivinceCityItemAdaper mAdapter;
     private PrivinceCityHttpRequest mPrivinceCityHttpRequest;
-    private int mListViewItemPosition = 0;
-    private Long remoteId;
     private int TIME = 10000;
-
 
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -68,56 +63,15 @@ public class ProvinceCity extends BaseActivity {
         timer.cancel();
     }
 
-    private void initZrcvlistview() {
-        mListView = (ZrcListView)findViewById(R.id.zListView);
-        mListView.setFirstTopOffset((int) this.getResources().getDimension(R.dimen.top_offset));
-
-        SimpleHeader header = new SimpleHeader(this);
-        header.setTextColor(0xff0066aa);
-        header.setCircleColor(0xff33bbee);
-        mListView.setHeadable(header);
-
-        SimpleFooter footer = new SimpleFooter(this);
-        footer.setCircleColor(0xff33bbee);
-        mListView.setFootable(footer);
-
-        mListView.setItemAnimForTopIn(R.anim.topitem_in);
-        mListView.setItemAnimForBottomIn(R.anim.bottomitem_in);
-
-        mListView.setOnRefreshStartListener(new ZrcListView.OnStartListener() {
-            @Override
-            public void onStart() {
-                refresh();
-            }
-        });
-
-        mListView.setOnLoadMoreStartListener(new ZrcListView.OnStartListener() {
-            @Override
-            public void onStart() {
-                loadMore();
-            }
-        });
-
-//        mDataManager.clearPrivinceItem();
-        mListView.refresh();
-
-        mAdapter = new PrivinceCityItemAdaper(this, mDataManager);
-        mListView.setAdapter(mAdapter);
-        mListView.setOnItemClickListener(mOnItemClickListener);
+    @Override
+    protected void ItemClick(int position) {
+        Intent intent = new Intent(ProvinceCity.this, DistrictCityActivity.class);
+        intent.putExtra("remoteId", mDataManager.getPrivinceCityItemIdList().get(position));
+        startActivity(intent);
     }
 
-    private ZrcListView.OnItemClickListener mOnItemClickListener = new ZrcListView.OnItemClickListener() {
-
-        @Override
-        public void onItemClick(ZrcListView parent, View view, int position, long id) {
-
-            Intent intent = new Intent(ProvinceCity.this, DistrictCityActivity.class);
-            intent.putExtra("remoteId", mDataManager.getPrivinceCityItemIdList().get(position));
-            startActivity(intent);
-        }
-    };
-
-    private void refresh() {
+    @Override
+    protected void refresh() {
         String id = remoteId+"";
         if(remoteId < 10) {
             id = "0"+id;
@@ -125,22 +79,10 @@ public class ProvinceCity extends BaseActivity {
        mPrivinceCityHttpRequest.StringRequest(Define.PRIVINCE_CITY_PATH + id + ".xml");
     }
 
-    private void loadMore() {
+    @Override
+    protected void loadMore() {
 
     }
-
-    private ZrcListView.OnScrollListener mOnScrollListener = new ZrcListView.OnScrollListener() {
-        @Override
-        public void onScrollStateChanged(ZrcAbsListView view, int scrollState) {
-
-        }
-
-        @Override
-        public void onScroll(ZrcAbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-            Log.e(TAG, "firstVisibleItem = " + firstVisibleItem + " visibleItemCount = " + visibleItemCount);
-            mListViewItemPosition = firstVisibleItem;
-        }
-    };
 
     public PrivinceCityHttpRequest.onPrivinceCityHttpRequestListener mPrivinceCityHttpRequestListener = new PrivinceCityHttpRequest.onPrivinceCityHttpRequestListener() {
         @Override
@@ -160,33 +102,17 @@ public class ProvinceCity extends BaseActivity {
     };
 
     @Override
-    public void initView() {
-        mAppData = (ApplicationData)getApplication();
-        remoteId  = getIntent().getLongExtra("remoteId",-1);
-        mDataManager = mAppData.getDataManager();
-
-        initZrcvlistview();
-
-
-    }
-
-    @Override
-    protected boolean haseBackButton() {
-        return true;
-    }
-
-    @Override
-    public void initData() {
+    protected void InitHttpRequest() {
         mPrivinceCityHttpRequest = new PrivinceCityHttpRequest(this);
         mPrivinceCityHttpRequest.setmProvincesStringHttpRequestListener(mPrivinceCityHttpRequestListener);
-        mListView.refresh();
-        mListView.setOnScrollListener(mOnScrollListener);
         timer.schedule(task, TIME, TIME);
     }
 
+
+
     @Override
-    protected int getLayoutId() {
-        return R.layout.activity_province;
+    protected BaseAdapter getListAdapter() {
+        return new PrivinceCityItemAdaper(this, mDataManager);
     }
 }
 

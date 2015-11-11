@@ -83,7 +83,7 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         if(scrollState == SCROLL_STATE_IDLE) {
             //加载可见项
-            imageLoader.loadImages(mSatrt, mEnd);
+            imageLoader.loadImages(mSatrt, mEnd, URLS);
         } else {
             //停止任务
             imageLoader.cancelAllTask();
@@ -95,7 +95,7 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
         mSatrt = firstVisibleItem;
         mEnd = firstVisibleItem + visibleItemCount;
         if(mFirstIn && visibleItemCount > 0) {
-            imageLoader.loadImages(mSatrt, mEnd);
+            imageLoader.loadImages(mSatrt, mEnd, URLS);
             mFirstIn = false;
         }
     }

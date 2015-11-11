@@ -161,9 +161,9 @@ public class ImageLoader {
     }
 
     //用来加载从start 到 end 的所有图片
-    public void loadImages(int start, int end) {
+    public void loadImages(int start, int end, String[] URLS) {
         for (int i = start; i < end; i++) {
-            String url = NewsAdapter.URLS[i];
+            String url = URLS[i];
             Bitmap bitmap = getBitmapFromCache(url);
             if(bitmap == null) {
                 newsAsyncTask task = new newsAsyncTask(url);

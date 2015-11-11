@@ -13,4 +13,7 @@
     <string name="action_example">action 示例</string>
     <string name="action_settings">Settings</string>
     <string name="asynctaskimageloader">加载异步图片</string>
+    <string name="loading">加载中…</string>
+    <string name="loading_no_more">已加载全部</string>
+    <string name="error_view_no_data">暂无内容</string>
 </resources>

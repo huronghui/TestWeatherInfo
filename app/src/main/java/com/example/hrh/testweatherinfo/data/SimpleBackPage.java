@@ -2,13 +2,15 @@ package com.example.hrh.testweatherinfo.data;
 
 import com.example.hrh.testweatherinfo.R;
 import com.example.hrh.testweatherinfo.activity.AsyncTaskImageLoaderActivity;
+import com.example.hrh.testweatherinfo.activity.TestFragmentActivity;
 
 /**
  * Created by hrh on 2015/10/6.
  */
 public enum  SimpleBackPage {
 
-    ASYNCTASKIMAGELOADER(1, R.string.asynctaskimageloader, AsyncTaskImageLoaderActivity.class);
+    ASYNCTASKIMAGELOADER(1, R.string.asynctaskimageloader, AsyncTaskImageLoaderActivity.class),
+    TESTFRAGMENTACTIVITY(2,  R.string.asynctaskimageloader, TestFragmentActivity.class);
 
     private int title;
     private Class<?> clz;

@@ -28,6 +28,14 @@
     <color name="filter_category_line">#ffe7e7e7</color>
     <color name="filter_category_title">#ff6b6b6b</color>
     <color name="filter_history_text">#ff666666</color>
+
+    <!-- 下拉刷新时，颜色值 -->
+    <color name="swiperefresh_color1">#ff00ddff</color>
+    <color name="swiperefresh_color2">#ffffbb33</color>
+    <color name="swiperefresh_color3">#ffff4444</color>
+    <color name="swiperefresh_color4">#ffaa66cc</color>
+
+
     <drawable name="actionbar_background">#0077d9</drawable>
     <drawable name="activated_background_color">#00a7ff</drawable>
 </resources>

@@ -101,7 +101,7 @@ public class NavigationDrawerFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 BaseApplication.showToast(position + "");
                 selectItem(position);
-                UIHelper.showSimpleBack(getActivity(), SimpleBackPage.ASYNCTASKIMAGELOADER);
+                UIHelper.showSimpleBack(getActivity(), SimpleBackPage.TESTFRAGMENTACTIVITY);
             }
         });
 

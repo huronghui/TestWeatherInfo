@@ -1,6 +1,7 @@
 package com.example.hrh.testweatherinfo.UtilTest;
 
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 
 import com.example.hrh.testweatherinfo.base.BaseApplication;
 
@@ -21,5 +22,15 @@ public class TDevice {
             versionCode = 0;
         }
         return versionCode;
+    }
+
+    public static boolean hasInternet() {
+        boolean flag;
+        if (((ConnectivityManager) BaseApplication.context().getSystemService(
+                "connectivity")).getActiveNetworkInfo() != null)
+            flag = true;
+        else
+            flag = false;
+        return flag;
     }
 }

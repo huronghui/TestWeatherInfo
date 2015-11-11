@@ -1,22 +1,24 @@
 package com.example.hrh.testweatherinfo.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.hrh.testweatherinfo.ApplicationData;
 import com.example.hrh.testweatherinfo.Define;
 import com.example.hrh.testweatherinfo.R;
-
 import com.example.hrh.testweatherinfo.base.BaseActivity;
 import com.example.hrh.testweatherinfo.data.WeatherBean.Cityweatherbean;
+import com.example.hrh.testweatherinfo.datamanager.DataManager;
 import com.example.hrh.testweatherinfo.network.CityWeatherHttpRequest;
 import com.example.hrh.testweatherinfo.network.CityWeatherInfoHttpRequest;
-import com.example.hrh.testweatherinfo.datamanager.DataManager;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by hrh on 2015/8/23.
@@ -24,6 +26,20 @@ import com.example.hrh.testweatherinfo.datamanager.DataManager;
 public class CityWeatherActivity extends BaseActivity {
 
     private static final String TAG = CityWeatherActivity.class.getSimpleName();
+    @Bind(R.id.city_textview_name)
+    TextView cityTextviewName;
+    @Bind(R.id.publish_text)
+    TextView publishText;
+    @Bind(R.id.current_date)
+    TextView currentDate;
+    @Bind(R.id.weather_desp)
+    TextView weatherDesp;
+    @Bind(R.id.temp1)
+    TextView temp1;
+    @Bind(R.id.temp2)
+    TextView temp2;
+    @Bind(R.id.weather_info_layout)
+    LinearLayout weatherInfoLayout;
     private ApplicationData mAppData;
     private DataManager mDataManager;
     private CityWeatherHttpRequest mCityWeatherHttpRequest;
@@ -31,26 +47,16 @@ public class CityWeatherActivity extends BaseActivity {
     private Long remoteId;
     private String weatherId;
 
-    private TextView cityNameText;
-    private TextView temp1;
-    private TextView temp2;
-    private TextView weatherDespText;
-    private TextView timeText;
 
     private void initview() {
-        cityNameText = (TextView)findViewById(R.id.city_textview_name);
-        temp1 = (TextView)findViewById(R.id.temp1);
-        temp1.setOnClickListener(listener);
-        temp2 = (TextView)findViewById(R.id.temp2);
-        weatherDespText = (TextView)findViewById(R.id.weather_desp);
-        timeText = (TextView)findViewById(R.id.current_date);
+        ButterKnife.bind(this);
     }
 
     protected void refresh() {
-        String id = remoteId+"";
+        String id = remoteId + "";
         Log.e(TAG, "id = " + id);
-        if((id.length() % 2) != 0 ) {
-            id = "0"+id;
+        if ((id.length() % 2) != 0) {
+            id = "0" + id;
         }
         mCityWeatherInfoHttpRequest.StringRequest(Define.PRIVINCE_CITY_PATH + id + ".xml");
     }
@@ -70,41 +76,42 @@ public class CityWeatherActivity extends BaseActivity {
             };
 
     public void LoadData(Cityweatherbean bean) {
-        cityNameText.setText(bean.getCity());
+        cityTextviewName.setText(bean.getCity());
         temp1.setText(bean.getTemp1());
         temp2.setText(bean.getTemp2());
-        weatherDespText.setText(bean.getWeather());
-        timeText.setText(bean.getPtime());
+        weatherDesp.setText(bean.getWeather());
+        currentDate.setText(bean.getPtime());
     }
+
     public CityWeatherHttpRequest.onCityWeatherHttpRequestListtener mOnCityWeatherHttpRequestListener =
             new CityWeatherHttpRequest.onCityWeatherHttpRequestListtener() {
                 @Override
                 public void onSucceed(Cityweatherbean bean) {
-                    Log.e(TAG,bean.toString());
+                    Log.e(TAG, bean.toString());
                     LoadData(bean);
                 }
 
                 @Override
                 public void onError(int reason) {
-                    Log.e(TAG,"Error =" + reason);
+                    Log.e(TAG, "Error =" + reason);
                 }
             };
 
 
-   private OnClickListener listener = new OnClickListener() {
-       @Override
-       public void onClick(View v) {
-           switch (v.getId()) {
-               case R.id.temp1:
-                   Intent intent = new Intent("com.example.testweatherinfo.FORCE_TITLE");
-                   sendBroadcast(intent);
+    private OnClickListener listener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.temp1:
+                    Intent intent = new Intent("com.example.testweatherinfo.FORCE_TITLE");
+                    sendBroadcast(intent);
                     break;
 
-               default:
-                   break;
-           }
-       }
-   };
+                default:
+                    break;
+            }
+        }
+    };
 
     @Override
     protected int getLayoutId() {
@@ -123,9 +130,10 @@ public class CityWeatherActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        mAppData = (ApplicationData)getApplication();
+
+        mAppData = (ApplicationData) getApplication();
         mDataManager = mAppData.getDataManager();
-        remoteId  = getIntent().getLongExtra("remoteId", -1);
+        remoteId = getIntent().getLongExtra("remoteId", -1);
 
         mCityWeatherHttpRequest = new CityWeatherHttpRequest(this);
         mCityWeatherHttpRequest.setmCityWeatherHttpRequestListener(mOnCityWeatherHttpRequestListener);
@@ -134,4 +142,5 @@ public class CityWeatherActivity extends BaseActivity {
         mCityWeatherInfoHttpRequest.setCityWeatherInfoHttpRequestListener(mCityWeatherInfoHttpRequestListener);
         refresh();
     }
+
 }

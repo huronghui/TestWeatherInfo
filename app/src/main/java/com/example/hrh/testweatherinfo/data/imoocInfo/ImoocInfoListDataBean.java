@@ -92,6 +92,33 @@ public class ImoocInfoListDataBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.picSmall);
+        dest.writeString(this.picBig);
+        dest.writeString(this.description);
+        dest.writeString(this.learner);
     }
+
+    public ImoocInfoListDataBean() {
+    }
+
+    protected ImoocInfoListDataBean(Parcel in) {
+        this.id = in.readString();
+        this.name = in.readString();
+        this.picSmall = in.readString();
+        this.picBig = in.readString();
+        this.description = in.readString();
+        this.learner = in.readString();
+    }
+
+    public static final Parcelable.Creator<ImoocInfoListDataBean> CREATOR = new Parcelable.Creator<ImoocInfoListDataBean>() {
+        public ImoocInfoListDataBean createFromParcel(Parcel source) {
+            return new ImoocInfoListDataBean(source);
+        }
+
+        public ImoocInfoListDataBean[] newArray(int size) {
+            return new ImoocInfoListDataBean[size];
+        }
+    };
 }

@@ -1,12 +1,10 @@
 package com.example.hrh.testweatherinfo.fragment;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -18,27 +16,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.example.hrh.testweatherinfo.R;
 import com.example.hrh.testweatherinfo.UtilTest.UIHelper;
-import com.example.hrh.testweatherinfo.activity.AsyncTaskImageLoaderActivity;
-import com.example.hrh.testweatherinfo.base.BaseApplication;
+import com.example.hrh.testweatherinfo.base.BaseFragment;
 import com.example.hrh.testweatherinfo.data.SimpleBackPage;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by hrh on 2015/10/4.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends BaseFragment implements View.OnClickListener {
 
     /**
-     * 存放选中item的位置
+     * 记住选中的item的位置
      */
-    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
+
+    private static final String STATE_SELECTION_POSITION = "selected_navigation_drawer_position";
 
     /**
      * 存放用户是否需要默认开启drawer的key
@@ -46,26 +43,36 @@ public class NavigationDrawerFragment extends Fragment {
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
     /**
-     * 宿主activity实现的回调接口的引用
+     * 对于activity的回调接口
      */
-    private NavigationDrawerCallbacks mCallbacks;
+    private NavigationDrawerCallbacks mCallback;
 
     /**
-     * 将action bar和drawerlayout绑定的组件
+     * 将内容关联到actionbar上
      */
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerListView;
-    private View mFragmentContainerView;
+    private View mDrawerListView;
+    private View mFragmentContentView;
 
     private int mCurrentSelectedPosition = 0;
-    private boolean mFromSavedInstanceState;
+    private boolean mFromSaveInstanceState;
     private boolean mUserLearnedDrawer;
-    private List<DrawerListItem> mData = new ArrayList<DrawerListItem>();
 
-    public NavigationDrawerFragment() {
-    }
+    @Bind(R.id.menu_item_quests)
+    View mMenu_Item_Quests;
+    @Bind(R.id.menu_item_opensoft)
+    View mMenu_Item_Opensoft;
+    @Bind(R.id.menu_item_blog)
+    View mMenu_Item_Blog;
+    @Bind(R.id.menu_item_gitapp)
+    View mMenu_Item_Gitapp;
+    @Bind(R.id.menu_item_setting)
+    View mMenu_Item_Setting;
+    @Bind(R.id.menu_item_theme)
+    View mMenu_Item_Theme;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,70 +83,86 @@ public class NavigationDrawerFragment extends Fragment {
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
         if (savedInstanceState != null) {
-            mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
-            mFromSavedInstanceState = true;
+            mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTION_POSITION);
+            mFromSaveInstanceState = true;
         }
 
+        selectItem(mCurrentSelectedPosition);
     }
 
     @Override
-    public void onActivityCreated (Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // 设置该fragment拥有自己的actionbar action item
         setHasOptionsMenu(true);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
-        View headerView = inflater.inflate(R.layout.list_header, null);
-        mDrawerListView.addHeaderView(headerView);
-
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                BaseApplication.showToast(position + "");
-                selectItem(position);
-                UIHelper.showSimpleBack(getActivity(), SimpleBackPage.TESTFRAGMENTACTIVITY);
-            }
-        });
-
-        String[] itemTitle = getResources().getStringArray(R.array.item_title);
-        int[] itemIconRes = {
-                R.drawable.ic_drawer_home,
-                R.drawable.ic_drawer_explore,
-                R.drawable.ic_drawer_follow,
-                R.drawable.ic_drawer_collect,
-                R.drawable.ic_drawer_draft,
-                R.drawable.ic_drawer_search,
-                R.drawable.ic_drawer_question,
-                R.drawable.ic_drawer_setting};
-
-        for (int i = 0; i < itemTitle.length; i++) {
-            DrawerListItem item = new DrawerListItem(getResources().getDrawable(itemIconRes[i]), itemTitle[i]);
-            mData.add(item);
-
-        }
-        selectItem(mCurrentSelectedPosition);
-        DrawerListAdapter adapter = new DrawerListAdapter(this.getActivity(), mData);
-        mDrawerListView.setAdapter(adapter);
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mDrawerListView = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        mDrawerListView.setOnClickListener(this);
+        ButterKnife.bind(this, mDrawerListView);
+        initView(mDrawerListView);
+        initData();
         return mDrawerListView;
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.menu_item_quests:
+                UIHelper.showSimpleBack(getActivity(), SimpleBackPage.TESTFRAGMENTACTIVITY);
+                getActivity().finish();
+                break;
+            case R.id.menu_item_opensoft:
+                UIHelper.showSimpleBack(getActivity(), SimpleBackPage.TESTROBOT);
+                getActivity().finish();
+                break;
+            case R.id.menu_item_blog:
+                break;
+            case R.id.menu_item_gitapp:
+                break;
+            case R.id.menu_item_setting:
+                break;
+            case R.id.menu_item_theme:
+                break;
+            default:
+                break;
+        }
+
+        mDrawerListView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mDrawerLayout.closeDrawers();
+            }
+        }, 800);
+    }
+
+    @Override
+    public void initView(View view) {
+        TextView night = (TextView)view.findViewById(R.id.tv_night);
+        night.setText("日间");
+
+        mMenu_Item_Opensoft.setOnClickListener(this);
+        mMenu_Item_Blog.setOnClickListener(this);
+        mMenu_Item_Quests.setOnClickListener(this);
+        mMenu_Item_Setting.setOnClickListener(this);
+        mMenu_Item_Theme.setOnClickListener(this);
+        mMenu_Item_Gitapp.setOnClickListener(this);
+    }
+
     public boolean isDrawerOpen() {
-        return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
+        return mDrawerLayout != null
+                && mDrawerLayout.isDrawerOpen(mFragmentContentView);
     }
 
     /**
-     * 设置导航drawer
-     *
-     * @param fragmentId   fragmentent的id
-     * @param drawerLayout fragment的容器
+     * 设置导航的drawer
+     * @param fragmentId  fragment 的id
+     * @param drawerLayout fragment 的容器
      */
     public void setUp(int fragmentId, DrawerLayout drawerLayout) {
-        mFragmentContainerView = getActivity().findViewById(fragmentId);
+        mFragmentContentView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -150,44 +173,37 @@ public class NavigationDrawerFragment extends Fragment {
         //隐藏Action bar上的app icon
         actionBar.setDisplayShowHomeEnabled(false);
 
-        mDrawerToggle = new ActionBarDrawerToggle(
-                getActivity(),                    /* 宿主 */
-                mDrawerLayout,                    /* DrawerLayout 对象 */
-              //  R.drawable.ic_drawer,             /* 替换actionbar上的'Up'图标 */
-                null,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close
-        ) {
+        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout,
+                null, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close) {
+
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                if (!isAdded()) {
+                if(! isAdded()) {
                     return;
                 }
-
-                getActivity().supportInvalidateOptionsMenu(); // 调用 onPrepareOptionsMenu()
+                getActivity().invalidateOptionsMenu();
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                if (!isAdded()) {
+                if(! isAdded()) {
                     return;
                 }
-
                 if (!mUserLearnedDrawer) {
                     mUserLearnedDrawer = true;
                     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).commit();
                 }
-
-                getActivity().supportInvalidateOptionsMenu(); // 调用 onPrepareOptionsMenu()
+                getActivity().invalidateOptionsMenu();
             }
         };
 
         // 如果是第一次进入应用，显示抽屉
-        if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
-            mDrawerLayout.openDrawer(mFragmentContainerView);
+        if (!mUserLearnedDrawer && !mFromSaveInstanceState) {
+            mDrawerLayout.openDrawer(mFragmentContentView);
         }
 
         mDrawerLayout.post(new Runnable() {
@@ -200,59 +216,50 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    public void openDrawerMenu() {
+        mDrawerLayout.openDrawer(mFragmentContentView);
+    }
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
-        if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
-        }
         if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(mFragmentContainerView);
+            mDrawerLayout.closeDrawer(mFragmentContentView);
         }
-        if (mCallbacks != null) {
-            if(mCurrentSelectedPosition == 0) {
-                mCallbacks.onNavigationDrawerItemSelected(getString(R.string.app_name));
-                return;
-            }
-            mCallbacks.onNavigationDrawerItemSelected(mData.get(position - 1).getTitle());
+        if (mCallback != null) {
+            mCallback.onNavigationDrawerItemSelected(position);
         }
+
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mCallbacks = (NavigationDrawerCallbacks) activity;
+            mCallback = (NavigationDrawerCallbacks) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
+            throw new ClassCastException("Activity must implement NavigationDrawerCallbacks");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallbacks = null;
+        mCallback = null;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
+        outState.putInt(STATE_SELECTION_POSITION, mCurrentSelectedPosition);
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // 当系统配置改变时调用DrawerToggle的改变配置方法（例如横竖屏切换会回调此方法）
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //当抽屉打开时显示应用全局的actionbar设置
-        if (mDrawerLayout != null && isDrawerOpen()) {
-            inflater.inflate(R.menu.global, menu);
-            showGlobalContextActionBar();
-        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -262,37 +269,20 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * 当抽屉打开时显示应用全局的actionbar设置
-     */
-    private void showGlobalContextActionBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle(R.string.app_name);
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
     private ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
     }
 
-    /**
-     * 宿主activity要实现的回调接口
-     * 用于activity与该fragment之间通讯
-     */
-    public static interface NavigationDrawerCallbacks {
-        /**
-         * 当drawer中的某个item被选择是调用该方法
-         */
-        void onNavigationDrawerItemSelected(String title);
+    public interface NavigationDrawerCallbacks {
+        void onNavigationDrawerItemSelected(int position);
     }
-
 }

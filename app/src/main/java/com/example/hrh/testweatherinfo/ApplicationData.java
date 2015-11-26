@@ -36,6 +36,8 @@ public class ApplicationData extends BaseApplication {
         instance = this;
         init();
 
+//        Thread.setDefaultUncaughtExceptionHandler(AppException
+//                .getAppExceptionHandler(this));
     }
 
     private void init() {

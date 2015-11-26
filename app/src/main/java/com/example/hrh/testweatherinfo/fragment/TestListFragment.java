@@ -12,6 +12,7 @@ import com.example.hrh.testweatherinfo.base.BaseListFragment;
 import com.example.hrh.testweatherinfo.base.ListBaseAdapter;
 import com.example.hrh.testweatherinfo.data.DistrictCity;
 import com.example.hrh.testweatherinfo.data.imoocInfo.ImoocInfoListDataBean;
+import com.example.hrh.testweatherinfo.interf.OnTabReselectListener;
 import com.example.hrh.testweatherinfo.network.DistrictCityHttpRequest;
 import com.example.hrh.testweatherinfo.network.ImoocInfoHttpRequest;
 
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * Created by hrh on 2015/11/9.
  */
-public class TestListFragment extends BaseListFragment{
+public class TestListFragment extends BaseListFragment implements OnTabReselectListener{
 
     private ImoocInfoHttpRequest mImoocInfoHttpRequest;
 
@@ -52,6 +53,7 @@ public class TestListFragment extends BaseListFragment{
             ListUtil<ImoocInfoListDataBean> listUtil = new ListUtil<>();
             ArrayList<ImoocInfoListDataBean> arrayList = listUtil.listToAarraylist(bean);
             mAdapter.setData(arrayList);
+            executeOnLoadFinish();
         }
 
         @Override
@@ -59,4 +61,9 @@ public class TestListFragment extends BaseListFragment{
             KJLoger.debug("Error = " + reason);
         }
     };
+
+    @Override
+    public void onTabReselect() {
+        onRefresh();
+    }
 }

@@ -7,10 +7,14 @@
     <dimen name="top_offset">20dp</dimen>
     <dimen name="main_top_offset">100dp</dimen>
     <dimen name="space_8">8.0dip</dimen>
+    <dimen name="text_size_14">14.0dip</dimen>
+    <dimen name="space_10">10.0dip</dimen>
+    <dimen name="text_size_16">16.0dip</dimen>
 
     <!--
          Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html
     -->
     <dimen name="navigation_drawer_width">240dp</dimen>
+    <dimen name="space_16">16.0dip</dimen>
 </resources>

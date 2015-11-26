@@ -99,10 +99,23 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
             mSwiperefreshlayout.setEnabled(false);
         }
     }
+    // å®Œæˆåˆ·æ–°
+    protected void executeOnLoadFinish() {
+        setSwipeRefreshLoadedState();
+        mState = STATE.NONE;
+    }
 
+
+    /** è®¾ç½®é¡¶éƒ¨åŠ è½½å®Œæ¯•çš„çŠ¶æ€ */
+    protected void setSwipeRefreshLoadedState() {
+        if (mSwiperefreshlayout != null) {
+            mSwiperefreshlayout.setRefreshing(false);
+            mSwiperefreshlayout.setEnabled(true);
+        }
+    }
 
     /**
-     * »ñÈ¡ÁĞ±íÊı¾İ
+     * ï¿½ï¿½È¡ï¿½Ğ±ï¿½ï¿½ï¿½ï¿½ï¿½
      *
      *
      * @param refresh
@@ -121,12 +134,12 @@ public abstract class BaseListFragment<T extends Parcelable> extends BaseFragmen
             return;
         }
 
-        //Êı¾İÒÑÈ«²¿¼ÓÔØ£¬»òÊı¾İÎª¿ÕÊ±£¬ »òÕıÔÚ¼ÓÔØÊ±£¬²»´¦Àí¹ö¶¯ÊÂ¼ş
-        if(mState == STATE.REFRESH || mState == STATE.LOADMORE) {
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Ê±ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
+        if(mState == STATE.LOADMORE || mState == STATE.REFRESH) {
             return;
         }
 
-        //ÅĞ¶ÏÊÇ·ñ¹ö¶¯µ½µ×²¿
+        //ï¿½Ğ¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½
 
         boolean scrollEnd = false;
         try {

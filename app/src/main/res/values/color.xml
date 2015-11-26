@@ -35,7 +35,23 @@
     <color name="swiperefresh_color3">#ffff4444</color>
     <color name="swiperefresh_color4">#ffaa66cc</color>
 
+    <color name="main_green">#40AA53</color>
+    <color name="actionbar_background">@color/main_green</color>
+
 
     <drawable name="actionbar_background">#0077d9</drawable>
     <drawable name="activated_background_color">#00a7ff</drawable>
+    <color name="done_text_color_normal">#ff333333</color>
+    <color name="done_text_color_disabled">#ffcccccc</color>
+    <color name="blue">#ff33cc33</color>
+    <color name="darker_blue">#ff00cc99</color>
+    <color name="date_picker_text_normal">#ff999999</color>
+
+
+    <color name="drawer_menu_item_background_normal">#e2e2e2</color>
+    <color name="drawer_menu_item_background_pressed">#ebeceb</color>
+
+    <color name="window_background">#EBEBEB</color>
+    <color name="actionbar_item_background_normal">@color/transparent</color>
+    <color name="actionbar_item_background_pressed">#0b751e</color>
 </resources>

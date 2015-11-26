@@ -3,6 +3,7 @@ package com.example.hrh.testweatherinfo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -79,8 +80,9 @@ public class AppStart extends Activity {
      * 跳转到...
      */
     private void redirectTo() {
-        Intent uploadLog = new Intent(this, LogUploadService.class);
-        startService(uploadLog);
+//        Intent uploadLog = new Intent(this, LogUploadService.class);
+//        startService(uploadLog);
+        Log.e("hhh", "TEST NAVIGATIONFRAGMENT111111111111");
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

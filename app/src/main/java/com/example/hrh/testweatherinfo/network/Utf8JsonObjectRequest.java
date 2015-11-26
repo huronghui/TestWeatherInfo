@@ -68,39 +68,4 @@ public class Utf8JsonObjectRequest extends JsonObjectRequest {
 
         return headers;
     }
-
-    // private Utf8StringRequest getUtf8StringRequest(String url) {
-    // Utf8StringRequest request = new Utf8StringRequest(url, new Response.Listener<String>() {
-    //
-    // @Override
-    // public void onResponse(String response) {
-    // Util.d(response);
-    // }
-    // }, new Response.ErrorListener() {
-    //
-    // @Override
-    // public void onErrorResponse(VolleyError error) {
-    // Util.e(error.getMessage());
-    // }
-    // });
-    // return request;
-    // }
-
-    // private class Utf8StringRequest extends StringRequest {
-    //
-    // public Utf8StringRequest(String url, Listener<String> listener, ErrorListener errorListener) {
-    // super(url, listener, errorListener);
-    // }
-    //
-    // @Override
-    // protected Response<String> parseNetworkResponse(NetworkResponse response) {
-    // String str = null;
-    // try {
-    // str = new String(response.com.example.hrh.testweatherinfo.data, "utf-8");
-    // } catch (UnsupportedEncodingException e) {
-    // e.printStackTrace();
-    // }
-    // return Response.success(str, HttpHeaderParser.parseCacheHeaders(response));
-    // }
-    // }
 }

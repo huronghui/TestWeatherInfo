@@ -18,8 +18,6 @@ import org.json.JSONObject;
 
 import java.util.Map;
 import java.util.Objects;
-
-import com.example.hrh.testweatherinfo.UtilTest.StringUtil;
 import com.example.hrh.testweatherinfo.network.json.PackageParser;
 
 /**
@@ -126,6 +124,16 @@ public class HttpRequest {
         return 0;
     }
 
+    public int add(int type, String url, JSONObject jsonObject) {
+        if (null != jsonObject) {
+            Log.d(TAG, "Out url = " + url + " jsonObject = " + jsonObject.toString());
+        }
+        Utf8JsonObjectRequest request = getJsonObjectRequest(type, url, jsonObject);
+//        request.setTag(tag);
+        mHttpRequestQueue.add(request);
+        return 0;
+    }
+
     public int query(String url, Map<String, String> params) {
         mHttpRequestQueue.add(getNormalJsonPostRequest(url, params));
         return 0;
@@ -142,6 +150,11 @@ public class HttpRequest {
     public Utf8JsonObjectRequest getJsonObjectRequest(final String url, JSONObject jsonObject) {
             return new Utf8JsonObjectRequest(url, jsonObject, createJsonListener(url),
                     createErrorListener(url), mActivity);
+    }
+
+    public Utf8JsonObjectRequest getJsonObjectRequest(int type, final String url, JSONObject jsonObject) {
+        return new Utf8JsonObjectRequest(type, url, jsonObject, createJsonListener(url),
+                createErrorListener(url), mActivity);
     }
 
     private Response.Listener<JSONObject> createJsonListener(final String url) {

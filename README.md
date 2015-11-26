@@ -1,2 +1,1 @@
-# TestWeatherInfo
-just one android program which is used volley and datamanager
+# TestWeatherInfo这是我写的一个测试程序，目前已完成的功能有：####1.在主界面使用的是fragment + viewpager ####2.建立了一些基础类，例如 baseactivity， basefragment，baselistfragment等等####3.设计了一个侧边栏，使用navigationDrawerFragment绑定actionbar 达到防知乎的侧边栏效果####4.实现了一个小功能，即使用图灵机器人达到了可以自有对话的效果
